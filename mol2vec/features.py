@@ -183,8 +183,7 @@ def _read_smi(file_name):
         line = file_name.readline()
         if not line:
             break
-        mol = Chem.MolFromSmiles(line.split('\t')[0])
-        yield Chem.AddHs(mol)
+        yield Chem.MolFromSmiles(line.split('\t')[0])
 
 
 def generate_corpus(in_file, out_file, r, sentence_type='alt', n_jobs=1):
