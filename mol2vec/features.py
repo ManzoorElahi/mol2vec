@@ -173,7 +173,7 @@ def _parallel_job(mol, r):
     """
     if mol is not None:
         smiles = Chem.MolToSmiles(mol)
-        mol = Chem.MolFromSmiles(smiles)
+        mol = Chem.AddHs(Chem.MolFromSmiles(smiles))
         sentence = mol2alt_sentence(mol, r)
         return " ".join(sentence)
 
@@ -183,7 +183,7 @@ def _read_smi(file_name):
         line = file_name.readline()
         if not line:
             break
-        yield Chem.MolFromSmiles(line.split('\t')[0])
+        yield Chem.AddHs(Chem.MolFromSmiles(line.split('\t')[0]))
 
 
 def generate_corpus(in_file, out_file, r, sentence_type='alt', n_jobs=1):
@@ -258,7 +258,7 @@ def generate_corpus(in_file, out_file, r, sentence_type='alt', n_jobs=1):
         for mol in suppl:
             if mol is not None:
                 smiles = Chem.MolToSmiles(mol)
-                mol = Chem.MolFromSmiles(smiles)
+                mol = Chem.AddHs(Chem.MolFromSmiles(smiles))
                 identifier_sentences, alternating_sentence = mol2sentence(mol, r)
 
                 identifier_sentence_r0 = " ".join(identifier_sentences[0])
@@ -397,7 +397,7 @@ def remove_salts_solvents(smiles, hac=3):
     """
     save = []
     for el in smiles.split("."):
-        mol = Chem.MolFromSmiles(str(el))
+        mol = Chem.AddHs(Chem.MolFromSmiles(str(el)))
         if mol.GetNumHeavyAtoms() <= hac:
             save.append(mol)
         
